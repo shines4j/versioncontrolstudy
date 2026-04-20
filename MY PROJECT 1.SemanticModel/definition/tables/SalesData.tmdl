@@ -46,7 +46,7 @@ table SalesData
 		formatString: 0.00%;-0.00%;0.00%
 		lineageTag: b0c52cf1-3469-4bc8-a4aa-05872b8aac3f
 
-	measure Rank = ```
+	measure Ranks = ```
 			if(ISINSCOPE(SalesData[Product Name]),
 			RANKX(ALL(SalesData[Product Name]),[Total Sales],,DESC,Dense))
 			

@@ -2608,7 +2608,7 @@ cultureInfo en-GB
 			      "Definition": {
 			        "Binding": {
 			          "ConceptualEntity": "SalesData",
-			          "ConceptualProperty": "Rank"
+			          "ConceptualProperty": "Ranks"
 			        }
 			      },
 			      "State": "Generated",

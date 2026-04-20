@@ -51,7 +51,7 @@
                       "Entity": "SalesData"
                     }
                   },
-                  "Property": "Rank"
+                  "Property": "Ranks"
                 }
               },
               "queryRef": "SalesData.Rank",
@@ -398,7 +398,7 @@
                 "Entity": "SalesData"
               }
             },
-            "Property": "Rank"
+            "Property": "Ranks"
           }
         },
         "type": "Advanced",
@@ -423,7 +423,7 @@
                           "Source": "s"
                         }
                       },
-                      "Property": "Rank"
+                      "Property": "Ranks"
                     }
                   },
                   "Right": {
