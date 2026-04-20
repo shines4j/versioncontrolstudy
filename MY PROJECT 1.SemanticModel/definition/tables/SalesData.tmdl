@@ -118,6 +118,10 @@ table SalesData
 	measure test = "this is test measure"
 		lineageTag: 1e975ed1-1acb-448f-a361-a122da16faf8
 
+	measure Sysdate = TODAY()
+		formatString: General Date
+		lineageTag: 628b23a7-71d9-44a3-8f3d-b5b3bd6c7555
+
 	column 'Order ID'
 		dataType: string
 		lineageTag: dd283e57-a2cb-40e2-a74c-68a29761460f
