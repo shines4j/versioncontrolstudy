@@ -1,0 +1,48 @@
+table Customer&Segment
+	lineageTag: 9badfac7-cc61-4f5b-854c-1d6fff2f8179
+
+	column 'dynamic cust ans seg'
+		lineageTag: cfda2c4c-597d-46dc-87b6-999b2b076b3c
+		summarizeBy: none
+		sourceColumn: [Value1]
+		sortByColumn: 'dynamic cust ans seg Order'
+
+		relatedColumnDetails
+			groupByColumn: 'dynamic cust ans seg Fields'
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'dynamic cust ans seg Fields'
+		isHidden
+		lineageTag: bb7fcb3d-ee0b-4ef1-97e9-2c09cfb94608
+		summarizeBy: none
+		sourceColumn: [Value2]
+		sortByColumn: 'dynamic cust ans seg Order'
+
+		extendedProperty ParameterMetadata =
+				{
+				  "version": 3,
+				  "kind": 2
+				}
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'dynamic cust ans seg Order'
+		isHidden
+		formatString: 0
+		lineageTag: cc55890e-4d98-48d4-be4a-7471ee21e907
+		summarizeBy: sum
+		sourceColumn: [Value3]
+
+		annotation SummarizationSetBy = Automatic
+
+	partition Customer&Segment = calculated
+		mode: import
+		source =
+				{
+				    ("Customer Name", NAMEOF('SalesData'[Customer Name]), 0),
+				    ("Segment", NAMEOF('SalesData'[Segment]), 1)
+				}
+
+	annotation PBI_Id = 17a48fc2e2b5413cbe2743996a3ae231
+

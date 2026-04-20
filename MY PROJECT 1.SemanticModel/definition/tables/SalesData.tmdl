@@ -1,0 +1,336 @@
+table SalesData
+	lineageTag: 86a94306-cd82-41f9-9f01-d424b1ab75c2
+
+	measure 'Total Sales' = SUM(SalesData[Sales])
+		lineageTag: f89bd340-af84-4d01-8be7-442312532557
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure minod = MIN(SalesData[Order Date])
+		formatString: General Date
+		lineageTag: d8b02c47-8485-446b-9830-734a3c6631e1
+
+	measure maxod = MAX(SalesData[Order Date])
+		formatString: General Date
+		lineageTag: 574038f1-53e5-484f-b86d-eb3384b1c1dd
+
+	measure minshid = min(SalesData[Ship Date])
+		formatString: General Date
+		lineageTag: 4a74a31f-e768-450b-8a04-d794520f3d6a
+
+	measure maxshp = max(SalesData[Ship Date])
+		formatString: General Date
+		lineageTag: 32da766d-87fc-4555-82a9-02676366a6e0
+
+	measure 'Total Sales(YTD)' = COALESCE(CALCULATE([Total Sales],DATESYTD('Calendar'[Date])),0)
+		lineageTag: b1acbea6-33d4-46c7-839f-dd08d9220048
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Total Sales(QTD)' = CALCULATE([Total Sales],DATESQTD('Calendar'[Date]))
+		lineageTag: 269e3fc0-8ead-4bd2-abfb-880f2690330a
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Total Sales(MTD)' = CALCULATE([Total Sales],DATESMTD('Calendar'[Date]))
+		lineageTag: 6dfe08cc-9c03-4900-b700-dfd20585ef8a
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Total Sales(Last Year)' = CALCULATE([Total Sales],SAMEPERIODLASTYEAR('Calendar'[Date]))
+		lineageTag: edb8996b-1592-41bc-9ab3-411246e54ad8
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'YOY Growth%' = COALESCE(DIVIDE([Total Sales]-[Total Sales(Last Year)],[Total Sales(Last Year)]),0)
+		formatString: 0.00%;-0.00%;0.00%
+		lineageTag: b0c52cf1-3469-4bc8-a4aa-05872b8aac3f
+
+	measure Rank = ```
+			if(ISINSCOPE(SalesData[Product Name]),
+			RANKX(ALL(SalesData[Product Name]),[Total Sales],,DESC,Dense))
+			
+			```
+		formatString: 0
+		lineageTag: 8315d65d-6810-4b1a-940f-ea4206c7d810
+
+	measure YoyCLR = IF([YOY Growth%]<=0,"red","green")
+		lineageTag: 2c584694-b9e4-4aa6-a575-2413a3b8d9b1
+
+	measure 'Total Customers' = DISTINCTCOUNT(SalesData[Customer ID])
+		formatString: 0
+		lineageTag: 620d6d38-b825-4934-b7bc-b5e98035c631
+
+	measure 'Total Qty Sold' = SUM(SalesData[Quantity])
+		formatString: 0
+		lineageTag: 7562025c-0af4-44e7-b87f-3485194ea570
+
+	measure 'Avg.OrderValue' = AVERAGEX(SalesData,[Total Sales])
+		lineageTag: 0866eaff-6c15-4c7c-b890-b7c06286c2f9
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Total Profit' = sum(SalesData[Profit])
+		lineageTag: 02d39255-afee-4020-a884-306883197f84
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Total Sales(Next Year)' = CALCULATE([Total Sales],NEXTYEAR('Calendar'[Date]))
+		lineageTag: bd6f7337-f737-4793-85a8-9a40eb2b59d6
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Last 3 months Sales' = CALCULATE([Total Sales],DATESINPERIOD('Calendar'[Date],max('Calendar'[Date]),-3,DAY))
+		lineageTag: d2456621-ebae-4af0-9f1f-03f648759883
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Last 3 months Sales datesbetween' = CALCULATE([Total Sales],DATESBETWEEN('Calendar'[Date],max('Calendar'[Date])-2,max('Calendar'[Date])))
+		lineageTag: 9910c883-e7a2-42ce-80e1-bd935d5e613c
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'total sales running' = CALCULATE([Total Sales],max('Calendar'[Date])>='Calendar'[Date])
+		lineageTag: 6f3b1d16-a6c0-43bd-8256-42ff75647b4b
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'TOTAL YTD' = TOTALYTD([Total Sales],'Calendar'[Date])
+		lineageTag: 3ab98d7d-2765-4ea6-931e-78d5934c8122
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure KEEPFILTER = CALCULATE([Total Sales],KEEPFILTERS('Calendar'[Year]=2023))
+		lineageTag: 307bc1fd-0e69-4dc9-b132-01645ae030a6
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure TREATAS = CALCULATE([Total Sales],TREATAS({"JANUARY","FEBRUARY"},'Calendar'[Month_Name]))
+		lineageTag: 55991753-f503-412c-8abf-8c675ca2a60b
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure Measure = CALCULATE(SUM(SalesData[Sales]),ALL())
+		lineageTag: 1205957b-6f6f-4e93-bf48-6cb564b77583
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column 'Order ID'
+		dataType: string
+		lineageTag: dd283e57-a2cb-40e2-a74c-68a29761460f
+		summarizeBy: none
+		sourceColumn: Order ID
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Order Date'
+		dataType: dateTime
+		formatString: Long Date
+		lineageTag: 6490d772-971e-44e1-9eb2-b527504b7d9f
+		summarizeBy: none
+		sourceColumn: Order Date
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	column 'Ship Date'
+		dataType: dateTime
+		formatString: Long Date
+		lineageTag: 3cab35f2-83dd-406c-8f0f-54df395ae649
+		summarizeBy: none
+		sourceColumn: Ship Date
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	column 'Ship Mode'
+		dataType: string
+		lineageTag: 50f974dd-4403-4a99-9309-4b5e6ff62053
+		summarizeBy: none
+		sourceColumn: Ship Mode
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Customer ID'
+		dataType: string
+		lineageTag: fd84453e-8fc8-4478-afae-9eb7d5661a25
+		summarizeBy: none
+		sourceColumn: Customer ID
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Customer Name'
+		dataType: string
+		lineageTag: f0eeb625-a7fc-4f8b-8481-ec5760bdceb4
+		summarizeBy: none
+		sourceColumn: Customer Name
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Customer Gender'
+		dataType: string
+		lineageTag: 733fceb3-5f5a-4cf1-8f66-7a97de34c00d
+		summarizeBy: none
+		sourceColumn: Customer Gender
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Customer DoB'
+		dataType: dateTime
+		formatString: Long Date
+		lineageTag: 956de75e-1eea-4070-8557-9dde43b7ef56
+		summarizeBy: none
+		sourceColumn: Customer DoB
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	column Segment
+		dataType: string
+		lineageTag: 39b448ca-2eeb-4def-9ac1-777debfa16f5
+		summarizeBy: none
+		sourceColumn: Segment
+
+		annotation SummarizationSetBy = Automatic
+
+	column Country
+		dataType: string
+		lineageTag: 30ce30f0-09c5-4e1f-be1a-0e068ad13b5b
+		summarizeBy: none
+		sourceColumn: Country
+
+		annotation SummarizationSetBy = Automatic
+
+	column City
+		dataType: string
+		lineageTag: 6caeec30-8ab9-4e92-a6eb-41faaf47b3eb
+		summarizeBy: none
+		sourceColumn: City
+
+		annotation SummarizationSetBy = Automatic
+
+	column State
+		dataType: string
+		lineageTag: e920af46-3b3d-40a0-8dbd-cf57720ea60d
+		summarizeBy: none
+		sourceColumn: State
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Postal Code'
+		dataType: int64
+		formatString: 0
+		lineageTag: 79c4fe0c-a5a0-414f-9567-4d2d5b09f044
+		summarizeBy: count
+		sourceColumn: Postal Code
+
+		annotation SummarizationSetBy = Automatic
+
+	column Region
+		dataType: string
+		lineageTag: 0a7b0691-bd21-4bbe-9c6a-5234141ae55f
+		summarizeBy: none
+		sourceColumn: Region
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Product ID'
+		dataType: string
+		lineageTag: 1872fd6f-25aa-449b-999a-32131676d979
+		summarizeBy: none
+		sourceColumn: Product ID
+
+		annotation SummarizationSetBy = Automatic
+
+	column Category
+		dataType: string
+		lineageTag: 540507cc-206f-415f-bfc8-fc4af6639323
+		summarizeBy: none
+		sourceColumn: Category
+
+		annotation SummarizationSetBy = Automatic
+
+	column Sub-Category
+		dataType: string
+		lineageTag: 74034982-4a8a-44fa-a3f6-d39e477656fe
+		summarizeBy: none
+		sourceColumn: Sub-Category
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Product Name'
+		dataType: string
+		lineageTag: f328d5c4-ce13-43d3-a27a-158d5119b3af
+		summarizeBy: none
+		sourceColumn: Product Name
+
+		annotation SummarizationSetBy = Automatic
+
+	column Sales
+		dataType: double
+		lineageTag: 9cb66bc8-4bff-4d70-8bc3-a603cfa6c3ca
+		summarizeBy: sum
+		sourceColumn: Sales
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column Quantity
+		dataType: int64
+		formatString: 0
+		lineageTag: 3ade79da-03b8-40a4-bb80-53321caaebad
+		summarizeBy: sum
+		sourceColumn: Quantity
+
+		annotation SummarizationSetBy = Automatic
+
+	column Discount
+		dataType: double
+		lineageTag: a6a6598a-72a6-4b30-b0f0-4dea3f3acb81
+		summarizeBy: sum
+		sourceColumn: Discount
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column Profit
+		dataType: double
+		lineageTag: 9dab7dde-4187-475c-acc4-bd1365f51b38
+		summarizeBy: sum
+		sourceColumn: Profit
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column 'Customer Age Group' = ```
+			
+			var ageslab=DATEDIFF(SalesData[Customer DoB],TODAY(),YEAR)
+			return 
+			 if(and(ageslab>=5,ageslab<=10),"Kids",if(ageslab<=17,"Teens",if(ageslab<=24,"Young Adults",if(ageslab<=34,"Adults",if(ageslab<=54,"Middle-aged Adults",if(ageslab>=55,"Seniors"))))))
+			```
+		lineageTag: a5813aa3-9e3d-4195-b955-5cd1edaf4d92
+		summarizeBy: none
+
+		annotation SummarizationSetBy = Automatic
+
+	partition SalesData = m
+		mode: import
+		source =
+				let
+				    Source = Excel.Workbook(File.Contents("C:\Users\shine\Downloads\SampleSalesData.xlsx"), null, true),
+				    SalesData_Sheet = Source{[Item="SalesData",Kind="Sheet"]}[Data],
+				    #"Promoted Headers" = Table.PromoteHeaders(SalesData_Sheet, [PromoteAllScalars=true]),
+				    #"Changed Type" = Table.TransformColumnTypes(#"Promoted Headers",{{"Order ID", type text}, {"Order Date", type date}, {"Ship Date", type date}, {"Ship Mode", type text}, {"Customer ID", type text}, {"Customer Name", type text}, {"Customer Gender", type text}, {"Customer DoB", type date}, {"Segment", type text}, {"Country", type text}, {"City", type text}, {"State", type text}, {"Postal Code", Int64.Type}, {"Region", type text}, {"Product ID", type text}, {"Category", type text}, {"Sub-Category", type text}, {"Product Name", type text}, {"Sales", type number}, {"Quantity", Int64.Type}, {"Discount", type number}, {"Profit", type number}})
+				in
+				    #"Changed Type"
+
+	annotation PBI_NavigationStepName = Navigation
+
+	annotation PBI_ResultType = Table
+

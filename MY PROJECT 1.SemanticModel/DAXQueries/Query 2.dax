@@ -1,0 +1,17 @@
+DEFINE
+	VAR __DS0Core = 
+		SUMMARIZECOLUMNS(
+			ROLLUPADDISSUBTOTAL('Calendar'[Date], "IsGrandTotalRowTotal"),
+			"Total_Sales", 'SalesData'[Total Sales],
+			"Last_3_months_Sales", 'SalesData'[Last 3 months Sales],
+			"Last_3_months_Sales_datesbetween", 'SalesData'[Last 3 months Sales datesbetween]
+		)
+
+	VAR __DS0PrimaryWindowed = 
+		TOPN(502, __DS0Core, [IsGrandTotalRowTotal], 0, 'Calendar'[Date], 1)
+
+EVALUATE
+	__DS0PrimaryWindowed
+
+ORDER BY
+	[IsGrandTotalRowTotal] DESC, 'Calendar'[Date]

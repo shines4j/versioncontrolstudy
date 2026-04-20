@@ -1,0 +1,42 @@
+table UserMapping
+	lineageTag: bf0896f0-3a0b-4793-8b89-59548f9c2842
+
+	column Email
+		dataType: string
+		lineageTag: 4b755945-6ae0-43d3-b46e-5fb830e3820f
+		summarizeBy: none
+		sourceColumn: Email
+
+		annotation SummarizationSetBy = Automatic
+
+	column Region
+		dataType: string
+		lineageTag: 369922e1-cbd4-4630-bfd7-e089099e3631
+		summarizeBy: none
+		sourceColumn: Region
+
+		annotation SummarizationSetBy = Automatic
+
+	column Is_admin = if(UserMapping[Region]="All",1,0)
+		formatString: 0
+		lineageTag: fdf79f9a-31d0-4533-a4f6-3a30351c2614
+		summarizeBy: none
+
+		annotation SummarizationSetBy = Automatic
+
+	partition UserMapping = m
+		mode: import
+		source =
+				let
+				    Source = Excel.Workbook(File.Contents("C:\Users\shine\Downloads\SampleSalesData.xlsx"), null, true),
+				    UserMapping_Sheet = Source{[Item="UserMapping",Kind="Sheet"]}[Data],
+				    #"Changed Type" = Table.TransformColumnTypes(UserMapping_Sheet,{{"Column1", type text}, {"Column2", type text}}),
+				    #"Promoted Headers" = Table.PromoteHeaders(#"Changed Type", [PromoteAllScalars=true]),
+				    #"Changed Type1" = Table.TransformColumnTypes(#"Promoted Headers",{{"Email", type text}, {"Region", type text}})
+				in
+				    #"Changed Type1"
+
+	annotation PBI_NavigationStepName = Navigation
+
+	annotation PBI_ResultType = Table
+

@@ -1,0 +1,23 @@
+model Model
+	culture: en-GB
+	defaultPowerBIDataSourceVersion: powerBI_V3
+	sourceQueryCulture: en-IN
+	dataAccessOptions
+		legacyRedirects
+		returnErrorValuesAsNull
+
+annotation __PBI_TimeIntelligenceEnabled = 0
+
+annotation PBI_QueryOrder = ["SalesData","UserMapping"]
+
+annotation PBI_ProTooling = ["DaxQueryView_Desktop","DevMode"]
+
+ref table SalesData
+ref table UserMapping
+ref table Calendar
+ref table Customer&Segment
+
+ref role DRLS
+
+ref cultureInfo en-GB
+

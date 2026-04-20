@@ -1,0 +1,7 @@
+role DRLS
+	modelPermission: read
+
+	tablePermission UserMapping = IF(MAXX(FILTER(UserMapping,UserMapping[Email]=USERPRINCIPALNAME()),UserMapping[Is_admin])=0,UserMapping[Email]=USERPRINCIPALNAME(),1=1)
+
+	annotation PBI_Id = c8fba2e475ac411ea695ee1f1aa474a1
+

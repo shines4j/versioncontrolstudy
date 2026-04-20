@@ -1,0 +1,13 @@
+relationship aed4dce8-75ec-3b7d-87c7-8d5695ce6650
+	fromColumn: SalesData.'Order Date'
+	toColumn: Calendar.Date
+
+relationship 6e56fa82-69fe-a701-a30d-fa4161c7e1b1
+	isActive: false
+	fromColumn: SalesData.'Ship Date'
+	toColumn: Calendar.Date
+
+relationship 4e4c3de1-5ce3-f310-5777-67d47065bda1
+	fromColumn: SalesData.Region
+	toColumn: UserMapping.Region
+
