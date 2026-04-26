@@ -28,7 +28,7 @@ table UserMapping
 		mode: import
 		source =
 				let
-				    Source = Excel.Workbook(File.Contents("C:\Users\shine\Downloads\SampleSalesData.xlsx"), null, true),
+				    Source = Excel.Workbook(File.Contents("C:\Users\USER\Downloads\SampleSalesData.xlsx"), null, true),
 				    UserMapping_Sheet = Source{[Item="UserMapping",Kind="Sheet"]}[Data],
 				    #"Changed Type" = Table.TransformColumnTypes(UserMapping_Sheet,{{"Column1", type text}, {"Column2", type text}}),
 				    #"Promoted Headers" = Table.PromoteHeaders(#"Changed Type", [PromoteAllScalars=true]),

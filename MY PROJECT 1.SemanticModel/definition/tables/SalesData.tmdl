@@ -115,6 +115,20 @@ table SalesData
 
 		annotation PBI_FormatHint = {"isGeneralNumber":true}
 
+	measure test = "this is test measure"
+		lineageTag: 1e975ed1-1acb-448f-a361-a122da16faf8
+
+	measure Sysdate = TODAY()
+		formatString: General Date
+		lineageTag: 628b23a7-71d9-44a3-8f3d-b5b3bd6c7555
+
+	measure mxdate = max('Calendar'[Date])
+		formatString: General Date
+		lineageTag: 6d175a83-7ac1-4cc0-b58d-de4e80dd1a23
+
+	measure shine = "shine"
+		lineageTag: f6f5048d-f766-45c5-81d3-7b111a73fc5e
+
 	column 'Order ID'
 		dataType: string
 		lineageTag: dd283e57-a2cb-40e2-a74c-68a29761460f
@@ -323,7 +337,7 @@ table SalesData
 		mode: import
 		source =
 				let
-				    Source = Excel.Workbook(File.Contents("C:\Users\shine\Downloads\SampleSalesData.xlsx"), null, true),
+				    Source = Excel.Workbook(File.Contents("C:\Users\USER\Downloads\SampleSalesData.xlsx"), null, true),
 				    SalesData_Sheet = Source{[Item="SalesData",Kind="Sheet"]}[Data],
 				    #"Promoted Headers" = Table.PromoteHeaders(SalesData_Sheet, [PromoteAllScalars=true]),
 				    #"Changed Type" = Table.TransformColumnTypes(#"Promoted Headers",{{"Order ID", type text}, {"Order Date", type date}, {"Ship Date", type date}, {"Ship Mode", type text}, {"Customer ID", type text}, {"Customer Name", type text}, {"Customer Gender", type text}, {"Customer DoB", type date}, {"Segment", type text}, {"Country", type text}, {"City", type text}, {"State", type text}, {"Postal Code", Int64.Type}, {"Region", type text}, {"Product ID", type text}, {"Category", type text}, {"Sub-Category", type text}, {"Product Name", type text}, {"Sales", type number}, {"Quantity", Int64.Type}, {"Discount", type number}, {"Profit", type number}})
