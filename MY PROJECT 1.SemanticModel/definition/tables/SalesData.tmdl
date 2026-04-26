@@ -126,9 +126,12 @@ table SalesData
 		formatString: General Date
 		lineageTag: 6d175a83-7ac1-4cc0-b58d-de4e80dd1a23
 
+<<<<<<< HEAD
 	measure shine = "shine"
 		lineageTag: f6f5048d-f766-45c5-81d3-7b111a73fc5e
 
+=======
+>>>>>>> f3c075ccfc8ee99e0ae0ccef9f52675700f02a6a
 	column 'Order ID'
 		dataType: string
 		lineageTag: dd283e57-a2cb-40e2-a74c-68a29761460f
